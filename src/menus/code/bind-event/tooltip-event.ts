@@ -29,7 +29,7 @@ function createShowHideFn(editor: Editor) {
                 onClick: (editor: Editor, $code: DomElement) => {
                     //dom操作删除
                     // $code.remove()
-                    $code.html('<code><xmp> </xmp></code>')
+                    $code.html('<code><pre> </pre></code>')
                     // 返回 true，表示执行完之后，隐藏 tooltip。否则不隐藏。
                     return true
                 },
