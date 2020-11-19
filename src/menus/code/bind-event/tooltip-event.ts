@@ -22,14 +22,17 @@ function createShowHideFn(editor: Editor) {
         const t = (text: string, prefix: string = i18nPrefix): string => {
             return editor.i18next.t(prefix + text)
         }
-
         const conf = [
             {
                 $elem: $(`<span>${t('清空内容')}</span>`),
                 onClick: (editor: Editor, $code: DomElement) => {
                     //dom操作删除
-                    // $code.remove()
-                    $code.html('<code><pre> </pre></code>')
+                    const parentCode = $code.parentUntil('code')
+                    if (parentCode) {
+                        parentCode.html('<pre> </pre>')
+                    } else {
+                        $code.html('<pre> </pre>')
+                    }
                     // 返回 true，表示执行完之后，隐藏 tooltip。否则不隐藏。
                     return true
                 },
