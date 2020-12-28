@@ -31,7 +31,7 @@ export default function disableInit(editor: Editor) {
                 <div class="w-e-content-preview w-e-text">${content}</div>
             </div>`
         )
-        editor.$textContainerElem.append($contentDom)
+        $contentDom.insertBefore(editor.$textElem)
         // 生成div 菜单膜布
         let menuZindexValue = editor.zIndex.get('menu')
         $menuDom = $(`<div class="w-e-menue-mantle" style="z-index:${menuZindexValue}"></div>`)
