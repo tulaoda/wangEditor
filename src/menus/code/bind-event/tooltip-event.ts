@@ -10,7 +10,7 @@ import Editor from '../../../editor/index'
 /**
  * 生成 Tooltip 的显示隐藏函数
  */
-function createShowHideFn(editor: Editor) {
+export function createShowHideFn(editor: Editor) {
     let tooltip: Tooltip | null
 
     /**
@@ -29,9 +29,9 @@ function createShowHideFn(editor: Editor) {
                     //dom操作删除
                     const parentCode = $code.parentUntil('code')
                     if (parentCode) {
-                        parentCode.html('<pre> </pre>')
+                        parentCode.html('<code><xmp > </xmp></code>')
                     } else {
-                        $code.html('<pre> </pre>')
+                        $code.html('<code><xmp type="Bash"> </xmp></code>')
                     }
                     // 返回 true，表示执行完之后，隐藏 tooltip。否则不隐藏。
                     return true
@@ -68,6 +68,8 @@ function createShowHideFn(editor: Editor) {
  * @param e
  * @param editor
  */
+/* istanbul ignore next */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function preEnterListener(e: KeyboardEvent, editor: Editor) {
     // 获取当前标签元素
     const $selectionElem = editor.selection.getSelectionContainerElem() as DomElement

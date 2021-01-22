@@ -31,7 +31,6 @@ class Tooltip {
         this.conf = conf
         this._show = false
         this._isInsertTextContainer = false
-
         // 定义 container
         const $container = $('<div></div>')
         $container.addClass('w-e-tooltip')
@@ -124,7 +123,6 @@ class Tooltip {
         const $targetElem = this.$targetElem
         const $container = this.$container
 
-        const length = conf.length
         conf.forEach((item: TooltipConfItemType, index: number) => {
             // 添加元素
             const $elem = item.$elem
@@ -168,6 +166,9 @@ class Tooltip {
         }
 
         this._show = true
+
+        editor.beforeDestroy(this.remove.bind(this))
+        editor.txt.eventHooks.onBlurEvents.push(this.remove.bind(this))
     }
 
     /**

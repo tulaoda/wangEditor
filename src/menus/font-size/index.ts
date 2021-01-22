@@ -13,7 +13,7 @@ import FontSizeList from './FontSizeList'
 class FontSize extends DropListMenu implements MenuActive {
     constructor(editor: Editor) {
         const $elem = $(
-            `<div class="w-e-menu">
+            `<div class="w-e-menu" data-title="字号">
                 <i class="w-e-icon-text-heigh"></i>
             </div>`
         )
@@ -37,7 +37,32 @@ class FontSize extends DropListMenu implements MenuActive {
      */
     public command(value: string): void {
         const editor = this.editor
+        const isEmptySelection = editor.selection.isSelectionEmpty()
+
+        const $selectionElem = editor.selection.getSelectionContainerElem()?.elems[0]
+
+        if ($selectionElem == null) return
+
+        const isFont = $selectionElem?.nodeName.toLowerCase() !== 'p'
+        const isSameSize = $selectionElem?.getAttribute('size') === value
+
+        if (isEmptySelection) {
+            if (isFont && !isSameSize) {
+                const $elems = editor.selection.getSelectionRangeTopNodes()
+                editor.selection.createRangeByElem($elems[0])
+                editor.selection.moveCursor($elems[0].elems[0])
+            }
+            // 插入空白选区
+            editor.selection.createEmptyRange()
+        }
+
         editor.cmd.do('fontSize', value)
+
+        if (isEmptySelection) {
+            // 需要将选区范围折叠起来
+            editor.selection.collapseRange()
+            editor.selection.restoreSelection()
+        }
     }
 
     /**

@@ -9,31 +9,55 @@ import initEventHooks from './event-hooks/index'
 import { UA, throttle } from '../utils/util'
 import getChildrenJSON, { NodeListType } from './getChildrenJSON'
 import getHtmlByNodeList from './getHtmlByNodeList'
-import { formatCodeHtml } from '../menus/code'
 
+/** 按键函数 */
+type KeyBoardHandler = (event: KeyboardEvent) => unknown
+/** 普通事件回调 */
+type EventHandler = (event?: Event) => unknown
 // 各个事件钩子函数
 type TextEventHooks = {
-    changeEvents: Function[] // 内容修改时
-    dropEvents: Function[]
-    clickEvents: Function[]
-    keyupEvents: Function[]
-    tabUpEvents: Function[] // tab 键（keyCode === ）Up 时
-    tabDownEvents: Function[] // tab 键（keyCode === 9）Down 时
-    enterUpEvents: Function[] // enter 键（keyCode === 13）up 时
-    enterDownEvents: Function[] // enter 键（keyCode === 13）down 时
-    deleteUpEvents: Function[] // 删除键（keyCode === 8）up 时
-    deleteDownEvents: Function[] // 删除键（keyCode === 8）down 时
-    pasteEvents: Function[] // 粘贴事件
-    linkClickEvents: Function[] // 点击链接事件
-    codeClickEvents: Function[] // 点击代码事件
-    textScrollEvents: Function[] // 编辑区域滑动事件
-    toolbarClickEvents: Function[] // 菜单栏被点击
-    imgClickEvents: Function[] // 图片被点击事件
-    imgDragBarMouseDownEvents: Function[] //图片拖拽MouseDown
-    tableClickEvents: Function[] //表格点击
-    menuClickEvents: Function[] // 每个菜单被点击时，按理说这个不属于 txt 的，先暂时在这放着吧
-    dropListMenuHoverEvents: Function[] // droplist 菜单悬浮事件。暂时放这里
-    splitLineEvents: Function[] // 点击分割线时
+    onBlurEvents: EventHandler[]
+    changeEvents: (() => void)[] // 内容修改时
+    dropEvents: ((event: DragEvent) => unknown)[]
+    clickEvents: EventHandler[]
+    keydownEvents: KeyBoardHandler[]
+    keyupEvents: KeyBoardHandler[]
+    /** tab 键（keyCode === ）Up 时 */
+    tabUpEvents: KeyBoardHandler[]
+    /** tab 键（keyCode === 9）Down 时 */
+    tabDownEvents: KeyBoardHandler[]
+    /** enter 键（keyCode === 13）up 时 */
+    enterUpEvents: KeyBoardHandler[]
+    /** enter 键（keyCode === 13）down 时 */
+    enterDownEvents: KeyBoardHandler[]
+    /** 删除键（keyCode === 8）up 时 */
+    deleteUpEvents: KeyBoardHandler[]
+    /** 删除键（keyCode === 8）down 时 */
+    deleteDownEvents: KeyBoardHandler[]
+    /** 粘贴事件 */
+    pasteEvents: ((e: ClipboardEvent) => void)[]
+    /** 点击链接事件 */
+    linkClickEvents: ((e: DomElement) => void)[]
+    /** 点击代码事件 */
+    codeClickEvents: ((e: DomElement) => void)[]
+    /** 编辑区域滑动事件 */
+    textScrollEvents: EventHandler[]
+    /** 菜单栏被点击 */
+    toolbarClickEvents: EventHandler[]
+    /** 图片被点击事件 */
+    imgClickEvents: ((e: DomElement) => void)[]
+    /** 图片拖拽MouseDown */
+    imgDragBarMouseDownEvents: (() => void)[]
+    /** 表格点击 */
+    tableClickEvents: ((e: DomElement) => void)[]
+    /** 每个菜单被点击时，按理说这个不属于 txt 的，先暂时在这放着吧 */
+    menuClickEvents: (() => void)[]
+    /** droplist 菜单悬浮事件。暂时放这里 */
+    dropListMenuHoverEvents: (() => void)[]
+    /** 点击分割线时 */
+    splitLineEvents: ((e: DomElement) => void)[]
+    /** 视频点击事件 */
+    videoClickEvents: ((e: DomElement) => void)[]
 }
 
 class Text {
@@ -44,9 +68,11 @@ class Text {
         this.editor = editor
 
         this.eventHooks = {
+            onBlurEvents: [],
             changeEvents: [],
             dropEvents: [],
             clickEvents: [],
+            keydownEvents: [],
             keyupEvents: [],
             tabUpEvents: [],
             tabDownEvents: [],
@@ -65,6 +91,7 @@ class Text {
             menuClickEvents: [],
             dropListMenuHoverEvents: [],
             splitLineEvents: [],
+            videoClickEvents: [],
         }
     }
 
@@ -89,7 +116,7 @@ class Text {
         const html = this.html()
         const $placeholder = this.editor.$textContainerElem.find('.placeholder')
         $placeholder.hide()
-        if (!html || html === '<p><br></p>' || html === ' ') $placeholder.show()
+        if (!html || html === ' ') $placeholder.show()
     }
 
     /**
@@ -175,13 +202,17 @@ class Text {
     }
 
     /**
-     * 获取/设置 字符串内容
+     * 设置 字符串内容
      * @param val text 字符串
      */
+    public text(val: string): void
+    /**
+     * 获取 字符串内容
+     */
+    public text(): string
     public text(val?: string): void | string {
         const editor = this.editor
         const $textElem = editor.$textElem
-        const $textContainerElem = editor.$textContainerElem
 
         // 没有 val ，是获取 text
         if (val == null) {
@@ -205,11 +236,18 @@ class Text {
     public append(html: string): void {
         const editor = this.editor
         const $textElem = editor.$textElem
+        const blankLineReg = /(<p><br><\/p>)+$/g
         if (html.indexOf('<') !== 0) {
             // 普通字符串，用 <p> 包裹
             html = `<p>${html}</p>`
         }
-        $textElem.append($(html))
+        if (blankLineReg.test($textElem.html().trim())) {
+            // 如果有多个空行替换最后一个 <p><br></p>
+            const insertHtml = $textElem.html().replace(/(.*)<p><br><\/p>/, '$1' + html)
+            this.html(insertHtml)
+        } else {
+            $textElem.append($(html))
+        }
 
         // 初始化选区，将光标定位到内容尾部
         editor.initSelection()
@@ -232,6 +270,14 @@ class Text {
 
         // 按键后保存
         $textElem.on('keyup', saveRange)
+
+        // 点击后保存，为了避免被多次执行而导致造成浪费，这里对 click 使用一次性绑定
+        function onceClickSaveRange() {
+            saveRange()
+            $textElem.off('click', onceClickSaveRange)
+        }
+        $textElem.on('click', onceClickSaveRange)
+
         $textElem.on('mousedown', () => {
             // mousedown 状态下，鼠标滑动到编辑区域外面，也需要保存选区
             $textElem.on('mouseleave', saveRange)
@@ -284,6 +330,12 @@ class Text {
             keyupEvents.forEach(fn => fn(e))
         })
 
+        // 键盘 down 时的 hooks
+        $textElem.on('keydown', (e: KeyboardEvent) => {
+            const keydownEvents = eventHooks.keydownEvents
+            keydownEvents.forEach(fn => fn(e))
+        })
+
         // delete 键 up 时 hooks
         $textElem.on('keyup', (e: KeyboardEvent) => {
             if (e.keyCode !== 8) return
@@ -299,7 +351,7 @@ class Text {
         })
 
         // 粘贴
-        $textElem.on('paste', (e: Event) => {
+        $textElem.on('paste', (e: ClipboardEvent) => {
             if (UA.isIE()) return // IE 不支持
 
             // 阻止默认行为，使用 execCommand 的粘贴命令
@@ -376,7 +428,7 @@ class Text {
                 .off('dragover', preventDefault)
         })
 
-        $textElem.on('drop', (e: Event) => {
+        $textElem.on('drop', (e: DragEvent) => {
             e.preventDefault()
             const events = eventHooks.dropEvents
             events.forEach(fn => fn(e))
@@ -401,10 +453,10 @@ class Text {
                 }
             }
 
-            if ($link == null) return // 没有点击链接，则返回
+            if (!$link) return // 没有点击链接，则返回
 
             const linkClickEvents = eventHooks.linkClickEvents
-            linkClickEvents.forEach(fn => fn($link))
+            linkClickEvents.forEach(fn => fn($link as DomElement))
         })
 
         // img click
@@ -426,10 +478,10 @@ class Text {
                 e.stopPropagation()
                 $img = $target
             }
-            if ($img == null) return // 没有点击图片，则返回
+            if (!$img) return // 没有点击图片，则返回
 
             const imgClickEvents = eventHooks.imgClickEvents
-            imgClickEvents.forEach(fn => fn($img))
+            imgClickEvents.forEach(fn => fn($img as DomElement))
         })
 
         // code click
@@ -445,16 +497,16 @@ class Text {
             } else {
                 // 否则，向父节点中寻找链接
                 const $parent = $target.parentUntil('pre')
-                if ($parent != null) {
+                if ($parent !== null) {
                     // 找到了
                     $code = $parent
                 }
             }
 
-            if ($code == null) return // 没有点击链接，则返回
+            if (!$code) return
 
             const codeClickEvents = eventHooks.codeClickEvents
-            codeClickEvents.forEach(fn => fn($code))
+            codeClickEvents.forEach(fn => fn($code as DomElement))
         })
 
         // splitLine click
@@ -471,12 +523,12 @@ class Text {
                 $target == null
             }
 
-            if ($splitLine == null) return // 没有点击分割线，则返回
+            if (!$splitLine) return // 没有点击分割线，则返回
             // 设置、恢复选区
             editor.selection.createRangeByElem($splitLine)
             editor.selection.restoreSelection()
             const splitLineClickEvents = eventHooks.splitLineEvents
-            splitLineClickEvents.forEach(fn => fn($splitLine))
+            splitLineClickEvents.forEach(fn => fn($splitLine as DomElement))
         })
 
         // 菜单栏被点击
@@ -486,7 +538,7 @@ class Text {
         })
 
         //mousedown事件
-        editor.$textContainerElem.on('mousedown', (e: Event) => {
+        editor.$textContainerElem.on('mousedown', (e: MouseEvent) => {
             const target = e.target as HTMLElement
             const $target = $(target)
             if ($target.hasClass('w-e-img-drag-rb')) {
@@ -504,12 +556,13 @@ class Text {
             const target = e.target as HTMLElement
 
             //获取最祖父元素
-            $dom = $(target).parentUntil('TABLE', target)
+            $dom = $(target).parentUntilEditor('TABLE', editor, target)
 
-            if ($dom == null) return // 没有table范围内，则返回
+            // 没有table范围内，则返回
+            if (!$dom) return
 
             const tableClickEvents = eventHooks.tableClickEvents
-            tableClickEvents.forEach(fn => fn($dom))
+            tableClickEvents.forEach(fn => fn($dom as DomElement))
         })
 
         // enter 键 down
@@ -517,6 +570,27 @@ class Text {
             if (e.keyCode !== 13) return
             const enterDownEvents = eventHooks.enterDownEvents
             enterDownEvents.forEach(fn => fn(e))
+        })
+
+        // 视频 click
+        $textElem.on('click', (e: Event) => {
+            // 存储视频
+            let $video: DomElement | null = null
+
+            const target = e.target as HTMLElement
+            const $target = $(target)
+
+            //处理视频点击 简单的video 标签
+            if ($target.getNodeName() === 'VIDEO') {
+                // 当前点击的就是视频
+                e.stopPropagation()
+                $video = $target
+            }
+
+            if (!$video) return // 没有点击视频，则返回
+
+            const videoClickEvents = eventHooks.videoClickEvents
+            videoClickEvents.forEach(fn => fn($video as DomElement))
         })
     }
 }

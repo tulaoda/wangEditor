@@ -3,14 +3,14 @@
  * @author lichunlin
  */
 
-import editor from '../../editor/index'
+import Editor from '../../editor/index'
 import { PanelConf, PanelTabConf } from '../menu-constructors/Panel'
 import { getRandom } from '../../utils/util'
 import $ from '../../utils/dom-core'
 import '../../assets/style/create-panel-conf.less'
 import CreateTable from './create-table'
 
-export default function (editor: editor): PanelConf {
+export default function (editor: Editor): PanelConf {
     const createTable = new CreateTable(editor)
 
     // panel 中需要用到的id
@@ -38,7 +38,9 @@ export default function (editor: editor): PanelConf {
                         }</span>
                     </div>
                     <div class="w-e-button-container">
-                        <button id="${insertBtnId}" class="right">${t('插入')}</button>
+                        <button type="button" id="${insertBtnId}" class="right">${t(
+                '插入'
+            )}</button>
                     </div>
                 </div>`,
             events: [

@@ -3,14 +3,13 @@
  * @author wangfupeng
  */
 
-import editor from '../../editor/index'
+import Editor from '../../editor/index'
 import { PanelConf, PanelTabConf } from '../menu-constructors/Panel'
 import { getRandom } from '../../utils/util'
 import $ from '../../utils/dom-core'
 import UploadImg from './upload-img'
-import { imgRegex } from '../../utils/const'
 
-export default function (editor: editor): PanelConf {
+export default function (editor: Editor): PanelConf {
     const config = editor.config
     const uploadImg = new UploadImg(editor)
 
@@ -30,36 +29,20 @@ export default function (editor: editor): PanelConf {
      * @param linkImg 网络图片链接
      */
     function checkLinkImg(src: string): boolean {
-        //编辑器进行正常校验，图片合规则使指针为true，不合规为false
-        let flag = true
-        if (!imgRegex.test(src)) {
-            flag = false
-        }
-
         //查看开发者自定义配置的返回值
         const check = config.linkImgCheck(src)
-        if (check === undefined) {
-            //用户未能通过开发者的校验，且开发者不希望编辑器提示用户
-            if (flag === false) console.log(t('您刚才插入的图片链接未通过编辑器校验', 'validate.'))
-        } else if (check === true) {
-            //用户通过了开发者的校验
-            if (flag === false) {
-                alert(
-                    `${t('您插入的网络图片无法识别', 'validate.')}，${t(
-                        '请替换为支持的图片类型',
-                        'validate.'
-                    )}：jpg | png | gif ...`
-                )
-            } else return true
-        } else {
+        if (check === true) {
+            return true
+        } else if (typeof check === 'string') {
             //用户未能通过开发者的校验，开发者希望我们提示这一字符串
-            alert(check)
+            config.customAlert(check, 'error')
         }
         return false
     }
 
     // tabs 配置 -----------------------------------------
     const fileMultipleAttr = config.uploadImgMaxLength === 1 ? '' : 'multiple="multiple"'
+    const accepts: string = config.uploadImgAccept.map((item: string) => `image/${item}`).join(',')
     const tabsConf: PanelTabConf[] = [
         // first tab
         {
@@ -71,7 +54,7 @@ export default function (editor: editor): PanelConf {
                         <i class="w-e-icon-upload2"></i>
                     </div>
                     <div style="display:none;">
-                        <input id="${upFileId}" type="file" ${fileMultipleAttr} accept="image/jpg,image/jpeg,image/png,image/gif,image/bmp"/>
+                        <input id="${upFileId}" type="file" ${fileMultipleAttr} accept="${accepts}"/>
                     </div>
                 </div>`,
             // 事件绑定
@@ -119,14 +102,17 @@ export default function (editor: editor): PanelConf {
         {
             title: t('网络图片'),
             tpl: `<div>
-                    <input 
-                        id="${linkUrlId}" 
-                        type="text" 
+                    <input
+                        id="${linkUrlId}"
+                        type="text"
                         class="block"
                         placeholder="${t('图片链接')}"/>
                     </td>
                     <div class="w-e-button-container">
-                        <button id="${linkBtnId}" class="right">${t('插入', '')}</button>
+                        <button type="button" id="${linkBtnId}" class="right">${t(
+                '插入',
+                ''
+            )}</button>
                     </div>
                 </div>`,
             events: [

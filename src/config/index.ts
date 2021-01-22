@@ -12,6 +12,7 @@ import imageConfig, { UploadImageHooksType } from './image'
 import textConfig from './text'
 import langConfig from './lang'
 import historyConfig from './history'
+import videoConfig, { UploadVideoHooksType } from './video'
 
 // 字典类型
 export type DicType = {
@@ -24,8 +25,10 @@ export type ConfigType = {
     languageType: string[]
     languageTab: string
     menus: string[]
+    excludeMenus: string[]
     fontNames: string[]
     lineHeights: string[]
+    showMenuTooltips: boolean
     indentation: IndentationType
     fontSizes: FontSizeConfType
     colors: string[]
@@ -45,6 +48,7 @@ export type ConfigType = {
     zIndexFullScreen: number
     showFullScreen: boolean
     showLinkImg: boolean
+    uploadImgAccept: string[]
     uploadImgServer: string
     uploadImgShowBase64: boolean
     uploadImgMaxSize: number
@@ -57,10 +61,12 @@ export type ConfigType = {
     uploadImgTimeout: number
     withCredentials: boolean
     customUploadImg: Function | null
-    customAlert: Function | null
+    customAlert: Function
+
+    onCatalogChange: Function | null
 
     lang: string
-    languages: Resource
+    languages: typeof langConfig
 
     linkCheck: Function
     linkImgCheck: Function
@@ -68,6 +74,23 @@ export type ConfigType = {
     historyMaxSize: number
 
     focus: boolean
+
+    onlineVideoCheck: Function
+    onlineVideoCallback: Function
+
+    showLinkVideo: Boolean
+    uploadVideoAccept: string[]
+    uploadVideoServer: string
+    uploadVideoMaxSize: number
+    uploadVideoName: string
+    uploadVideoParams: DicType
+    uploadVideoParamsWithUrl: boolean
+    uploadVideoHeaders: DicType
+    uploadVideoHooks: UploadVideoHooksType
+    uploadVideoTimeout: number
+    withVideoCredentials: boolean
+    customUploadVideo: Function | null
+    customInsertVideo: Function | null
 }
 
 export type Resource = {
@@ -96,15 +119,10 @@ const defaultConfig = Object.assign(
     textConfig,
     langConfig,
     historyConfig,
+    videoConfig,
     //链接校验的配置函数
     {
         linkCheck: function (text: string, link: string): string | boolean {
-            return true
-        },
-    },
-    //网络图片校验的配置函数
-    {
-        linkImgCheck: function (src: string): string | boolean {
             return true
         },
     }

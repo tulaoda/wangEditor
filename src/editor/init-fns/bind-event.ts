@@ -56,10 +56,7 @@ function _bindFocusAndBlur(editor: Editor): void {
             if (isToolbar && !isMenu) {
                 return
             }
-
-            if (editor.isFocus) {
-                _blurHandler(editor)
-            }
+            _blurHandler(editor)
             editor.isFocus = false
         } else {
             if (!editor.isFocus) {
@@ -68,6 +65,10 @@ function _bindFocusAndBlur(editor: Editor): void {
 
             editor.isFocus = true
         }
+    }
+    if (document.activeElement === editor.$textElem.elems[0]) {
+        _focusHandler(editor)
+        editor.isFocus = true
     }
     $(document).on('click', listener)
     // 全局事件在编辑器实例销毁的时候进行解绑
@@ -99,6 +100,7 @@ function _blurHandler(editor: Editor) {
     const config = editor.config
     const onblur = config.onblur
     const currentHtml = editor.txt.html() || ''
+    editor.txt.eventHooks.onBlurEvents.forEach(fn => fn())
     onblur(currentHtml)
 }
 

@@ -5,15 +5,13 @@
 import $, { DomElement } from '../utils/dom-core'
 import { UA } from '../utils/util'
 import Editor from './index'
-import SelectionRangeTopNodes from './selection-range-top-nodes/index'
 
 class SelectionAndRange {
     public editor: Editor
-    private _currentRange: Range | null | undefined
+    private _currentRange: Range | null | undefined = null
 
     constructor(editor: Editor) {
         this.editor = editor
-        this._currentRange = null
     }
 
     /**
@@ -43,7 +41,7 @@ class SelectionAndRange {
 
         // 获取选区范围的 DOM 元素
         const $containerElem = this.getSelectionContainerElem(range)
-        if (!$containerElem) {
+        if (!$containerElem?.length) {
             // 当 选区范围内没有 DOM元素 则抛出
             return
         }
@@ -59,6 +57,14 @@ class SelectionAndRange {
         const editor = this.editor
         const $textElem = editor.$textElem
         if ($textElem.isContain($containerElem)) {
+            if ($textElem.elems[0] === $containerElem.elems[0]) {
+                if ($textElem.html().trim() === '<p><br></p>') {
+                    const $children = $textElem.children()
+                    const $last = $children?.last()
+                    editor.selection.createRangeByElem($last as DomElement, true, true)
+                    editor.selection.restoreSelection()
+                }
+            }
             // 是编辑内容之内的
             this._currentRange = range
         }
@@ -191,7 +197,24 @@ class SelectionAndRange {
             // 部分情况下会报错，兼容一下
         }
     }
-
+    /**
+     * 重新设置选区
+     * @param startDom 选区开始的元素
+     * @param endDom 选区结束的元素
+     */
+    public createRangeByElems(startDom: Node, endDom: Node): void {
+        let selection = window.getSelection ? window.getSelection() : document.getSelection()
+        //清除所有的选区
+        selection?.removeAllRanges()
+        const range = document.createRange()
+        range.setStart(startDom, 0)
+        // 设置多行标签之后，第二个参数会被h标签内的b、font标签等影响range范围的选取
+        range.setEnd(endDom, endDom.childNodes.length || 1)
+        // 保存设置好的选区
+        this.saveRange(range)
+        //恢复选区
+        this.restoreSelection()
+    }
     /**
      * 根据 DOM 元素设置选区
      * @param $elem DOM 元素
@@ -216,6 +239,11 @@ class SelectionAndRange {
         if (toStart != null) {
             // 传入了 toStart 参数，折叠选区。如果没传入 toStart 参数，则忽略这一步
             range.collapse(toStart)
+
+            if (!toStart) {
+                this.saveRange(range)
+                this.editor.selection.moveCursor(elem)
+            }
         }
 
         // 存储 range
@@ -226,19 +254,37 @@ class SelectionAndRange {
      * 获取 当前 选取范围的 顶级(段落) 元素
      * @param $editor
      */
-    public getSelectionRangeTopNodes(editor: Editor): DomElement[] {
-        const item = new SelectionRangeTopNodes(editor)
-        item.init()
-        return item.getSelectionNodes()
+    public getSelectionRangeTopNodes(): DomElement[] {
+        // 清空，防止叠加元素
+        let $nodeList: DomElement[]
+
+        const $startElem = this.getSelectionStartElem()?.getNodeTop(this.editor)
+        const $endElem = this.getSelectionEndElem()?.getNodeTop(this.editor)
+
+        $nodeList = this.recordSelectionNodes($($startElem), $($endElem))
+
+        return $nodeList
     }
 
     /**
-     * 移动光标位置
+     * 移动光标位置,默认情况下在尾部
+     * 有一个特殊情况是firefox下的文本节点会自动补充一个br元素，会导致自动换行
+     * 所以默认情况下在firefox下的文本节点会自动移动到br前面
      * @param {Node} node 元素节点
+     * @param {number} position 光标的位置
      */
-    public moveCursor(node: Node) {
+    public moveCursor(node: Node, position?: number): void {
         const range = this.getRange()
-        const pos = node.childNodes.length
+        //对文本节点特殊处理
+        let len: number =
+            node.nodeType === 3 ? (node.nodeValue?.length as number) : node.childNodes.length
+        if ((UA.isFirefox || UA.isIE()) && len !== 0) {
+            // firefox下在节点为文本节点和节点最后一个元素为文本节点的情况下
+            if (node.nodeType === 3 || node.childNodes[len - 1].nodeName === 'BR') {
+                len = len - 1
+            }
+        }
+        let pos: number = position ?? len
         if (!range) {
             return
         }
@@ -247,6 +293,48 @@ class SelectionAndRange {
             range.setEnd(node, pos)
             this.restoreSelection()
         }
+    }
+
+    /**
+     * 获取光标在当前选区的位置
+     */
+    public getCursorPos(): number | undefined {
+        const selection = window.getSelection()
+
+        return selection?.anchorOffset
+    }
+
+    /**
+     * 清除当前选区的Range,notice:不影响已保存的Range
+     */
+    public clearWindowSelectionRange(): void {
+        const selection = window.getSelection()
+        if (selection) {
+            selection.removeAllRanges()
+        }
+    }
+
+    /**
+     * 记录节点 - 从选区开始节点开始 一直到匹配到选区结束节点为止
+     * @param $node 节点
+     */
+    public recordSelectionNodes($node: DomElement, $endElem: DomElement): DomElement[] {
+        let $list: DomElement[] = []
+        let $NODE: DomElement = $node
+        let isEnd = true
+        while (isEnd) {
+            const $elem = $NODE.getNodeTop(this.editor)
+            if ($elem.getNodeName() === 'BODY') isEnd = false // 兜底
+            if ($elem.length > 0) {
+                $list.push($($NODE))
+                if ($endElem?.equal($elem)) {
+                    isEnd = false
+                } else {
+                    $NODE = $elem.getNextSibling()
+                }
+            }
+        }
+        return $list
     }
 }
 

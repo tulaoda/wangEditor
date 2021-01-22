@@ -4,7 +4,6 @@
  */
 
 import $, { DomElement } from '../utils/dom-core'
-import { UA } from '../utils/util'
 import Editor from './index'
 
 class Command {
@@ -19,9 +18,6 @@ class Command {
      * @param name name
      * @param value value
      */
-    public do(name: string): void
-    public do(name: string, value: string): void
-    public do(name: string, value: DomElement): void
     public do(name: string, value?: string | DomElement): void {
         const editor = this.editor
 
@@ -76,7 +72,13 @@ class Command {
         } else if (range.insertNode) {
             // IE
             range.deleteContents()
-            range.insertNode($(html).elems[0])
+            if ($(html).elems.length > 0) {
+                range.insertNode($(html).elems[0])
+            } else {
+                let newNode = document.createElement('p')
+                newNode.appendChild(document.createTextNode(html))
+                range.insertNode(newNode)
+            }
             editor.selection.collapseRange()
         }
         // else if (range.pasteHTML) {

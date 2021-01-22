@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import $, { DomElement } from '../utils/dom-core'
+import $, { DomElement, DomElementSelector } from '../utils/dom-core'
 import { deepClone } from '../utils/util'
 import defaultConfig, { ConfigType } from '../config'
 import SelectionAndRangeAPI from './selection'
@@ -15,12 +15,14 @@ import initSelection from './init-fns/init-selection'
 import bindEvent from './init-fns/bind-event'
 import i18nextInit from './init-fns/i18next-init'
 import initFullScreen, { setUnFullScreen, setFullScreen } from './init-fns/set-full-screen'
+import scrollToHead from './init-fns/scroll-to-head'
 import ZIndex from './z-index'
 import Change from './change/index'
 import History from './history/index'
 import disableInit from './disable'
 
 // 创建菜单的 class
+import { MenuListType } from '../menus/menu-list'
 import BtnMenu from '../menus/menu-constructors/BtnMenu'
 import DropList from '../menus/menu-constructors/DropList'
 import DropListMenu from '../menus/menu-constructors/DropListMenu'
@@ -32,7 +34,7 @@ let EDITOR_ID = 1
 
 class Editor {
     // 暴露 $
-    static $: Function = $
+    static $ = $
 
     static BtnMenu = BtnMenu
     static DropList = DropList
@@ -40,10 +42,11 @@ class Editor {
     static Panel = Panel
     static PanelMenu = PanelMenu
     static Tooltip = Tooltip
+    static globalCustomMenuConstructorList: MenuListType = {}
 
     public id: string
-    public toolbarSelector: string
-    public textSelector: string | undefined
+    public toolbarSelector: DomElementSelector
+    public textSelector?: DomElementSelector
     public config: ConfigType
     public $toolbarElem: DomElement
     public $textContainerElem: DomElement
@@ -77,7 +80,7 @@ class Editor {
      * @param toolbarSelector 工具栏 DOM selector
      * @param textSelector 文本区域 DOM selector
      */
-    constructor(toolbarSelector: string, textSelector?: string) {
+    constructor(toolbarSelector: DomElementSelector, textSelector?: DomElementSelector) {
         // id，用以区分单个页面不同的编辑器对象
         this.id = `wangEditor-${EDITOR_ID++}`
 
@@ -178,7 +181,6 @@ class Editor {
     public destroy(): void {
         // 调用钩子函数
         this.beforeDestroyHooks.forEach(fn => fn.call(this))
-
         // 销毁 DOM 节点
         this.$toolbarElem.remove()
         this.$textContainerElem.remove()
@@ -196,6 +198,24 @@ class Editor {
      */
     public unFullScreen(): void {
         setUnFullScreen(this)
+    }
+
+    /**
+     * 滚动到指定标题锚点
+     * @param id 标题锚点id
+     */
+    public scrollToHead(id: string): void {
+        scrollToHead(this, id)
+    }
+
+    /**
+     * 自定义添加菜单
+     * @param key 菜单 key
+     * @param Menu 菜单构造函数
+     */
+    static registerMenu(key: string, Menu: any) {
+        if (!Menu || typeof Menu !== 'function') return
+        Editor.globalCustomMenuConstructorList[key] = Menu
     }
 }
 

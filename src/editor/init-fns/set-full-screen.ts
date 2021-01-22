@@ -27,7 +27,9 @@ export const setFullScreen = (editor: Editor) => {
     $iconElem.addClass(iconExitFullScreenText)
     $editorParent.addClass(classfullScreenEditor)
     $editorParent.css('z-index', config.zIndexFullScreen)
-    $textContainerElem.css('height', '100%')
+    const bar = $toolbarElem.getBoundingClientRect()
+    const h = window.innerHeight - bar.height
+    $textContainerElem.css('height', `${h}px`)
 }
 
 /**
@@ -58,7 +60,7 @@ const initFullScreen = (editor: Editor) => {
     if (!editor.config.showFullScreen) return
     const $toolbarElem = editor.$toolbarElem
     const $elem = $(
-        `<div class="w-e-menu">
+        `<div class="w-e-menu" data-title="全屏">
             <i class="${iconFullScreenText}"></i>
         </div>`
     )

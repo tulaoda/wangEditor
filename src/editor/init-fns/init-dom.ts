@@ -22,16 +22,12 @@ export default function (editor: Editor): void {
     const height = config.height
     const i18next = editor.i18next
 
-    let $toolbarElem: DomElement
-    let $textContainerElem: DomElement
+    const $toolbarElem: DomElement = $('<div></div>')
+    const $textContainerElem: DomElement = $('<div></div>')
     let $textElem: DomElement
     let $children: DomElement | null
 
     if (textSelector == null) {
-        // 只有 toolbarSelector ，即是容器的选择器或元素，toolbar 和 text 的元素自行创建
-        $toolbarElem = $('<div></div>')
-        $textContainerElem = $('<div></div>')
-
         // 将编辑器区域原有的内容，暂存起来
         $children = $toolbarSelector.children()
 
@@ -49,8 +45,8 @@ export default function (editor: Editor): void {
             .css('height', `${height}px`)
     } else {
         // toolbarSelector 和 textSelector 都有
-        $toolbarElem = $toolbarSelector
-        $textContainerElem = $(textSelector)
+        $toolbarSelector.append($toolbarElem)
+        $(textSelector).append($textContainerElem)
         // 将编辑器区域原有的内容，暂存起来
         $children = $textContainerElem.children()
     }

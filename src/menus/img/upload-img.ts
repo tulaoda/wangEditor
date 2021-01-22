@@ -8,7 +8,7 @@ import { arrForEach, forEach } from '../../utils/util'
 import post from '../../editor/upload/upload-core'
 import Progress from '../../editor/upload/progress'
 
-type ResType = {
+export type ResType = {
     errno: number | string
     data: string[]
 }
@@ -18,24 +18,6 @@ class UploadImg {
 
     constructor(editor: Editor) {
         this.editor = editor
-    }
-
-    /**
-     * 提示信息
-     * @param alertInfo alert info
-     * @param debugInfo debug info
-     */
-    private alert(alertInfo: string, debugInfo?: string): void {
-        const customAlert = this.editor.config.customAlert
-        if (customAlert) {
-            customAlert(alertInfo)
-        } else {
-            window.alert(alertInfo)
-        }
-
-        if (debugInfo) {
-            console.error('wangEditor: ' + debugInfo)
-        }
     }
 
     /**
@@ -62,8 +44,9 @@ class UploadImg {
             img = null
         }
         img.onerror = () => {
-            this.alert(
+            config.customAlert(
                 t('插入图片错误'),
+                'error',
                 `wangEditor: ${t('插入图片错误')}，${t('图片链接')} "${src}"，${t('下载链接失败')}`
             )
             img = null
@@ -129,7 +112,7 @@ class UploadImg {
         // ------------------------------ 验证文件信息 ------------------------------
         const resultFiles: File[] = []
         const errInfos: string[] = []
-        arrForEach(files, (file: File) => {
+        arrForEach(files, file => {
             const name = file.name
             const size = file.size
 
@@ -155,11 +138,18 @@ class UploadImg {
         })
         // 抛出验证信息
         if (errInfos.length) {
-            this.alert(`${t('图片验证未通过')}: \n` + errInfos.join('\n'))
+            config.customAlert(`${t('图片验证未通过')}: \n` + errInfos.join('\n'), 'warning')
             return
         }
+
+        // 如果过滤后文件列表为空直接返回
+        if (resultFiles.length === 0) {
+            config.customAlert(t('传入的文件不合法'), 'warning')
+            return
+        }
+
         if (resultFiles.length > maxLength) {
-            this.alert(t('一次最多上传') + maxLength + t('张图片'))
+            config.customAlert(t('一次最多上传') + maxLength + t('张图片'), 'warning')
             return
         }
 
@@ -215,35 +205,37 @@ class UploadImg {
                 formData,
                 headers: uploadImgHeaders,
                 withCredentials: !!withCredentials,
-                beforeSend: (xhr: XMLHttpRequest) => {
+                beforeSend: xhr => {
                     if (hooks.before) return hooks.before(xhr, editor, resultFiles)
                 },
-                onTimeout: (xhr: XMLHttpRequest) => {
-                    this.alert(t('上传图片超时'))
+                onTimeout: xhr => {
+                    config.customAlert(t('上传图片超时'), 'error')
                     if (hooks.timeout) hooks.timeout(xhr, editor)
                 },
-                onProgress: (percent: number, e: ProgressEvent) => {
+                onProgress: (percent, e) => {
                     const progressBar = new Progress(editor)
                     if (e.lengthComputable) {
                         percent = e.loaded / e.total
                         progressBar.show(percent)
                     }
                 },
-                onError: (xhr: XMLHttpRequest) => {
-                    this.alert(
+                onError: xhr => {
+                    config.customAlert(
                         t('上传图片错误'),
+                        'error',
                         `${t('上传图片错误')}，${t('服务器返回状态')}: ${xhr.status}`
                     )
                     if (hooks.error) hooks.error(xhr, editor)
                 },
-                onFail: (xhr: XMLHttpRequest, resultStr: string) => {
-                    this.alert(
+                onFail: (xhr, resultStr) => {
+                    config.customAlert(
                         t('上传图片失败'),
+                        'error',
                         t('上传图片返回结果错误') + `，${t('返回结果')}: ` + resultStr
                     )
                     if (hooks.fail) hooks.fail(xhr, editor, resultStr)
                 },
-                onSuccess: (xhr: XMLHttpRequest, result: ResType) => {
+                onSuccess: (xhr, result: ResType) => {
                     if (hooks.customInsert) {
                         // 自定义插入图片
                         hooks.customInsert(this.insertImg.bind(this), result, editor)
@@ -251,8 +243,9 @@ class UploadImg {
                     }
                     if (result.errno != '0') {
                         // 返回格式不对，应该为 { errno: 0, data: [...] }
-                        this.alert(
+                        config.customAlert(
                             t('上传图片失败'),
+                            'error',
                             `${t('上传图片返回结果错误')}，${t('返回结果')} errno=${result.errno}`
                         )
                         if (hooks.fail) hooks.fail(xhr, editor, result)
@@ -271,7 +264,7 @@ class UploadImg {
             })
             if (typeof xhr === 'string') {
                 // 上传被阻止
-                this.alert(xhr)
+                config.customAlert(xhr, 'error')
             }
 
             // 阻止以下代码执行，重要！！！
@@ -280,7 +273,7 @@ class UploadImg {
 
         // ------------------------------ 显示 base64 格式 ------------------------------
         if (uploadImgShowBase64) {
-            arrForEach(files, (file: File) => {
+            arrForEach(files, file => {
                 const _this = this
                 const reader = new FileReader()
                 reader.readAsDataURL(file)

@@ -1,3 +1,255 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.1.0](https://github.com/wangeditor-team/wangEditor/compare/v4.3.0...v1.1.0) (2021-01-22)
+
+
+### Features
+
+* **code:** change code  to pre ([04c6365](https://github.com/wangeditor-team/wangEditor/commit/04c63657836d8ee9aa49e41d7371bd5d5371dea4))
+* **editor:** fix delete content code ([a216cbe](https://github.com/wangeditor-team/wangEditor/commit/a216cbe41ccf5ba7541be3dc84ec990c25321415))
+* **editor:** fix delete content code ([9e40f04](https://github.com/wangeditor-team/wangEditor/commit/9e40f04091632db1b952f4112d3d5399744e0779))
+* **editor:** fix delete content code ([3a211ef](https://github.com/wangeditor-team/wangEditor/commit/3a211ef87a4c9dbdacbcc552a933668ff1b1aee3))
+
+
+### Bug Fixes
+
+* fix bug ([a73bd22](https://github.com/wangeditor-team/wangEditor/commit/a73bd2222a923059ad9bb522867f2de4c17f7235))
+* release 1.0.4 ([127e0eb](https://github.com/wangeditor-team/wangEditor/commit/127e0eb8f91b18022d570a8b2af837770511dbd3))
+* **menu:** fix bug ([32fb46a](https://github.com/wangeditor-team/wangEditor/commit/32fb46a6fdaa5ddf1489305702b3a243bba21942))
+
+## [4.6.4](https://github.com/wangeditor-team/wangEditor/compare/v4.6.3...v4.6.4) (2021-01-21)
+
+
+### Bug Fixes
+
+* 处理最后一个元素为代码块时的跳出问题 ([023b86b](https://github.com/wangeditor-team/wangEditor/commit/023b86b23dc8a5160a5112f4c6c4da5c12b82b92))
+* 工具栏tooltips开关配置 ([1c6d08c](https://github.com/wangeditor-team/wangEditor/commit/1c6d08c1c42f0668cdfe77f2f8250cdfe1631f2f))
+* 修复选中多行文本时无法设置head的问题 ([89a49cc](https://github.com/wangeditor-team/wangEditor/commit/89a49ccbc1ab07eaeb8f5fc508296f9dd3f7b187))
+* 优化粘贴 input 复制内容，多次粘贴会产生多余的html问题 ([f12d6ee](https://github.com/wangeditor-team/wangEditor/commit/f12d6ee6007f48fb4958f5538201468263f83757))
+* 粘贴样式配置失效处理 ([332c079](https://github.com/wangeditor-team/wangEditor/commit/332c0799d1d427aab94fc21d0add62baacc4fc94))
+* bar与text分离时,追加编辑器子节点 ([a6329f6](https://github.com/wangeditor-team/wangEditor/commit/a6329f66e59a1e2086186970d3958de930c79ddc))
+
+
+### Features
+
+*  扩展菜单注册太过繁琐 [#2493](https://github.com/wangeditor-team/wangEditor/issues/2493) ([9162b62](https://github.com/wangeditor-team/wangEditor/commit/9162b6283d5e82c84ac7c12bd8a6d5923ac58f54))
+
+## [4.6.3](https://github.com/wangeditor-team/wangEditor/compare/v4.6.2...v4.6.3) (2021-01-14)
+
+
+### Bug Fixes
+
+* 标题按钮设置异常,错别字修复 ([37addbc](https://github.com/wangeditor-team/wangEditor/commit/37addbc081a7989bebe996c839ed78eb577758fc))
+* 撤销和恢复按钮的tooltip描述不正确 ([af6fddc](https://github.com/wangeditor-team/wangEditor/commit/af6fddc374629fb1922cff106839aa0ddb2bbeee))
+* 内容为空时append多出空行&createPanelConf 修改支持异步返回 ([bde84fd](https://github.com/wangeditor-team/wangEditor/commit/bde84fd6976fb77ee6174dd28d79b78970d7c1b9))
+* 去掉在线图片和视频插入的校验限制 ([9e2f14a](https://github.com/wangeditor-team/wangEditor/commit/9e2f14ab1cc39bea43ea393ae4f5bfa75f57abbb))
+* 失去焦点tooltip不消失 ([3c48acf](https://github.com/wangeditor-team/wangEditor/commit/3c48acfe41acb74bdce63f70d34358a953681dd0))
+* 完善对齐 ([1b22c2a](https://github.com/wangeditor-team/wangEditor/commit/1b22c2a782ecef455db35ae172f2e6f95e248d5f))
+* 修复撤销功能在某些极端情况下报错 ([578c3ce](https://github.com/wangeditor-team/wangEditor/commit/578c3ced5bda396b2d8c8a76dc95042b18cddbef))
+* 修复初始化编辑器调用 API 插入内容，快捷键撤销报错的问题 ([3e2c375](https://github.com/wangeditor-team/wangEditor/commit/3e2c375275465e97544593e69dcc6e5982a382fb))
+* 修复了列表对齐的问题 ([a4e43fd](https://github.com/wangeditor-team/wangEditor/commit/a4e43fd1f3111b1869c6c47895d221cc64dc7a9a))
+* 修复eidtor.txt.append和editor.txt.html光标移动不正确问题 ([045782b](https://github.com/wangeditor-team/wangEditor/commit/045782be1138e197ee638a9b9b168d714b923de4))
+
+
+### Features
+
+* 新增上传视频功能 ([c9e5446](https://github.com/wangeditor-team/wangEditor/commit/c9e5446f08acf80487ba36adebe679a4c45adda6))
+
+## [4.6.2](https://github.com/wangeditor-team/wangEditor/compare/v4.6.1...v4.6.2) (2021-01-07)
+
+
+### Bug Fixes
+
+* wps粘贴bug修复 ([735e878](https://github.com/wangeditor-team/wangEditor/commit/735e87861de20f6ef916a486e125a080cf13f18c))
+
+## [4.6.1](https://github.com/wangeditor-team/wangEditor/compare/v4.6.0...v4.6.1) (2020-12-31)
+
+
+### Bug Fixes
+
+* 工具栏鼠标悬浮时显示提示文字 ([6bebfb4](https://github.com/wangeditor-team/wangEditor/commit/6bebfb48b20921298d5d3dddf1cbd3ac4e7a662f))
+* 首次载入不获取焦点的情况菜单无效的问题 ([d89efe4](https://github.com/wangeditor-team/wangEditor/commit/d89efe41ca96a0f7b62646f351a73455bffb3216))
+
+# [4.6.0](https://github.com/wangeditor-team/wangEditor/compare/v4.5.4...v4.6.0) (2020-12-24)
+
+
+### Bug Fixes
+
+* 初始化时对编辑区的click进行saveRange一次性绑定 ([4981cbd](https://github.com/wangeditor-team/wangEditor/commit/4981cbd2e7ba20e812dd2c6f9b1b7b3932b4a09f))
+* 对齐menu 单元测试修改过测 ([f3ce71c](https://github.com/wangeditor-team/wangEditor/commit/f3ce71ce86dd47d43867f4753b96f1760db96752))
+* 兼容ie11 ([694d3ad](https://github.com/wangeditor-team/wangEditor/commit/694d3adc0a4d18e243eb446247d8eff1c1f5a66c))
+* 删除多余文件和代码，增加判空 ([3f15639](https://github.com/wangeditor-team/wangEditor/commit/3f156392a1e544e0b9e76650d5e3555c413de214))
+* 修复对齐菜单bug ([b9242fa](https://github.com/wangeditor-team/wangEditor/commit/b9242fa7bbfe4b4fe722b4d40c980c843c1b0d1f))
+* 修复设置focus为false,无法正常粘贴的问题 ([d551b26](https://github.com/wangeditor-team/wangEditor/commit/d551b267318b8a23571d2eac792b84b24053f97a))
+* 修复元素指定id作为菜单 ([2d83fc2](https://github.com/wangeditor-team/wangEditor/commit/2d83fc2dd16cc3152ebc320b5e2d030c22e3e72e))
+* 修复在styleWithCss下的产生的样式冲突 ([2460ef9](https://github.com/wangeditor-team/wangEditor/commit/2460ef9f41a6cfd99ba7226996a887b0a7a9f596))
+* 修复chrome下在第一行设置todo无法删除的问题 ([b3db3b0](https://github.com/wangeditor-team/wangEditor/commit/b3db3b0723e4c1fa34f84b34124d6a2c8bd96fe1))
+* 修改对齐方式单侧 ([a506544](https://github.com/wangeditor-team/wangEditor/commit/a5065441f37d5e4fe15fd5029716173585992a03))
+* 修改函数名,增加可读性 ([0181bcc](https://github.com/wangeditor-team/wangEditor/commit/0181bcc632fe8fd8fcd8763cf368dfc6056c1a04))
+* fix ie problem ([f840d90](https://github.com/wangeditor-team/wangEditor/commit/f840d90af9895b7134792d51a4b72d99b2cc0832))
+* issue-2518 对齐修复 ([4bd6392](https://github.com/wangeditor-team/wangEditor/commit/4bd6392f7a320c69bfc85702a5b7133930e2b6f0))
+
+
+### Features
+
+* 完成todo功能 ([fcceeba](https://github.com/wangeditor-team/wangEditor/commit/fcceeba68c2af1da118327d1e190702f2d47dc65))
+
+## [4.5.4](https://github.com/wangeditor-team/wangEditor/compare/v4.5.3...v4.5.4) (2020-12-18)
+
+
+### Bug Fixes
+
+* 插入网络视频的校验 ([285029d](https://github.com/wangeditor-team/wangEditor/commit/285029d1de5b0b488700810b9217ae84eff3791a))
+* 设置完标题回车后,光标消失 ([0121c5c](https://github.com/wangeditor-team/wangEditor/commit/0121c5cdc7e74640228a217cd0510c98efaba5bc))
+* 修改插入视频校验的正则 ([26196ac](https://github.com/wangeditor-team/wangEditor/commit/26196ac88467d6d83e1d93c34cdb84468ca440b0))
+* 修改插入视频校验的正则 ([38e6289](https://github.com/wangeditor-team/wangEditor/commit/38e62898c83a4e074bae1764b381e496453bd401))
+* 修改插入视频校验的正则 ([9944d51](https://github.com/wangeditor-team/wangEditor/commit/9944d515ebee27509395230be696abdc352dd43a))
+
+
+### Features
+
+* editor.config新增excludeMenus配置 ([5401280](https://github.com/wangeditor-team/wangEditor/commit/5401280ea9e54d920b3541078fd2f39955235a92))
+* editor.config增加excludeMenus配置 ([15f1caa](https://github.com/wangeditor-team/wangEditor/commit/15f1caae024b79e76412c8d1aad48c9dac97122f))
+
+## [4.5.3](https://github.com/wangeditor-team/wangEditor/compare/v4.5.2...v4.5.3) (2020-12-10)
+
+
+### Bug Fixes
+
+* [#2469](https://github.com/wangeditor-team/wangEditor/issues/2469) 火狐83版本多了一个诡异空格,81.0.2没有空格 ([b070e55](https://github.com/wangeditor-team/wangEditor/commit/b070e550ce8c5a52c874ddba021cc8f69c3e9b1b))
+* 添加一个 向上查到的方法 限制在 编辑器内，修改表格的触发判断 ([c2aa192](https://github.com/wangeditor-team/wangEditor/commit/c2aa192a1a2b295be0ab7deabd15860a8b9be0eb))
+* 修复标题样式会被覆盖的问题 ([864f3ba](https://github.com/wangeditor-team/wangEditor/commit/864f3baaaa1e619be7ad682a1dd9b82e69280883))
+* 修改按钮的 type 为 button ([6037b91](https://github.com/wangeditor-team/wangEditor/commit/6037b913ce1aa7e1e4149262295da4d9c301935c))
+* 粘贴文字保留空格 ([d935195](https://github.com/wangeditor-team/wangEditor/commit/d935195de4bda4c9fe0dd5b5dc793109b752c87a))
+* 粘贴文字中间空格保留 ([7499d29](https://github.com/wangeditor-team/wangEditor/commit/7499d292fab5b4c7bb3b645dd9c811fb44d82c9f))
+* 最后一行文本看不见 ([66c95a9](https://github.com/wangeditor-team/wangEditor/commit/66c95a9596a41c0a41da6fb5cb9ffa10a5975847))
+
+
+### Features
+
+* 插入网络视频的校验和回调 ([dbbbda2](https://github.com/wangeditor-team/wangEditor/commit/dbbbda2757237a6e55d618d51bdb8bf0f2b95e20))
+
+## [4.5.2](https://github.com/wangeditor-team/wangEditor/compare/v4.5.1...v4.5.2) (2020-11-27)
+
+
+### Bug Fixes
+
+* 错误提示类型优化 ([61cc9b4](https://github.com/wangeditor-team/wangEditor/commit/61cc9b4d5081ce7e0733753e138ae2ff4f157921))
+* 多实例全屏的问题 ([83f6b43](https://github.com/wangeditor-team/wangEditor/commit/83f6b43db87a4671d46d302f975a5e6bf7b8b070))
+* 去掉测试全屏的代码 ([03a3f81](https://github.com/wangeditor-team/wangEditor/commit/03a3f811a01255bb5aeb8f6a64985919df76e271))
+* 添加 custom alert 的 html 文档 ([baba963](https://github.com/wangeditor-team/wangEditor/commit/baba96388c819e8b51288fb8997d14998f3c7447))
+* 添加居中样式 ([8db384a](https://github.com/wangeditor-team/wangEditor/commit/8db384ab19987943e255b22fe77144c0be9ebf8a))
+* fix wrap wrap in firefox ([7ebdbbf](https://github.com/wangeditor-team/wangEditor/commit/7ebdbbf3dbccf5a83d02518698d74ef643a1576b))
+* fix: 某些情况下，无法成功粘贴 ([dbfe2eb](https://github.com/wangeditor-team/wangEditor/commit/dbfe2eb3db0426a22fe3296fa3e62c1dc44b6537)), closes [#2530](https://github.com/wangeditor-team/wangEditor/issues/2530) [#2530](https://github.com/wangeditor-team/wangEditor/issues/2530)
+* img 添加 重置 效果 ([10df1bb](https://github.com/wangeditor-team/wangEditor/commit/10df1bbcda00b723299a4935077a3636f4a09906))
+
+## [4.5.1](https://github.com/wangeditor-team/wangEditor/compare/v4.5.0...v4.5.1) (2020-11-26)
+
+
+### Bug Fixes
+
+* setJSON的表格不成功的问题解决 ([f57395b](https://github.com/wangeditor-team/wangEditor/commit/f57395b3445fe05debdeaf4eaae7ddd1ce44da1e))
+* uploadImgAccept 类型 ([18b7a42](https://github.com/wangeditor-team/wangEditor/commit/18b7a42e02a6079502d3ce7583524f3f391a082f))
+* 去掉console.log ([6197747](https://github.com/wangeditor-team/wangEditor/commit/6197747700ce99616831624688f6395b4baaae9b))
+* 变量名优化 ([5d20096](https://github.com/wangeditor-team/wangEditor/commit/5d20096319a63c11bd9071dfe107245fac632597))
+* 完善了设置字体大小、样式、背景、文字颜色等菜单的功能 ([3072543](https://github.com/wangeditor-team/wangEditor/commit/3072543efdff2cb36f594ac396eb6c2c61815d13))
+* 添加自定义setJSON表格按钮 ([7bd76c6](https://github.com/wangeditor-team/wangEditor/commit/7bd76c6ebab4011e40fab4d78fa59c74903df7b6))
+
+
+### Features
+
+* 🎸 support custom accept for image [#1655](https://github.com/wangeditor-team/wangEditor/issues/1655) ([5af4dcd](https://github.com/wangeditor-team/wangEditor/commit/5af4dcd505a41a3f4fbe6b1e885c0005bcf887d8))
+
+# [4.6.0](https://github.com/wangeditor-team/wangEditor/compare/v4.5.0...v4.6.0) (2020-11-25)
+
+
+### Bug Fixes
+
+* setJSON的表格不成功的问题解决 ([f57395b](https://github.com/wangeditor-team/wangEditor/commit/f57395b3445fe05debdeaf4eaae7ddd1ce44da1e))
+* uploadImgAccept 类型 ([18b7a42](https://github.com/wangeditor-team/wangEditor/commit/18b7a42e02a6079502d3ce7583524f3f391a082f))
+* 去掉console.log ([6197747](https://github.com/wangeditor-team/wangEditor/commit/6197747700ce99616831624688f6395b4baaae9b))
+* 变量名优化 ([5d20096](https://github.com/wangeditor-team/wangEditor/commit/5d20096319a63c11bd9071dfe107245fac632597))
+* 完善了设置字体大小、样式、背景、文字颜色等菜单的功能 ([3072543](https://github.com/wangeditor-team/wangEditor/commit/3072543efdff2cb36f594ac396eb6c2c61815d13))
+* 添加自定义setJSON表格按钮 ([7bd76c6](https://github.com/wangeditor-team/wangEditor/commit/7bd76c6ebab4011e40fab4d78fa59c74903df7b6))
+
+
+### Features
+
+* 🎸 support custom accept for image [#1655](https://github.com/wangeditor-team/wangEditor/issues/1655) ([5af4dcd](https://github.com/wangeditor-team/wangEditor/commit/5af4dcd505a41a3f4fbe6b1e885c0005bcf887d8))
+
+# [4.5.0](https://github.com/wangeditor-team/wangEditor/compare/v4.4.2...v4.5.0) (2020-11-20)
+
+
+### Bug Fixes
+
+* console去掉 ([d49f3d3](https://github.com/wangeditor-team/wangEditor/commit/d49f3d3c0ca3f17fe848390c9965270220ead9f7))
+* fileName 去掉随机数 ([d7a3a34](https://github.com/wangeditor-team/wangEditor/commit/d7a3a34a3832135b07f2c383de6011b5829a875b))
+* online改成catalog ([ba43299](https://github.com/wangeditor-team/wangEditor/commit/ba4329990f2fd58ffb062678496997c52c9b9b2d))
+* server rm shell ([565ddb3](https://github.com/wangeditor-team/wangEditor/commit/565ddb3f345cf8e0900e7fa71809785193235928))
+* 优化运行机制 ([900f7dd](https://github.com/wangeditor-team/wangEditor/commit/900f7dd17d69973469bcaae8429c521c43896045))
+* 引用路径 ([573fd4a](https://github.com/wangeditor-team/wangEditor/commit/573fd4a48306ea4d5f39b56f84a93d967057a15a))
+* 新增API滚动到指定标题 ([3772ff0](https://github.com/wangeditor-team/wangEditor/commit/3772ff08b1d5e853cd7a6588fde487ff26ae0449))
+* 类型引用位置问题 ([3922c8d](https://github.com/wangeditor-team/wangEditor/commit/3922c8d06286b15de643956d924dd6dcf1e3c827))
+
+
+### Features
+
+* 添加大纲配置及demo ([99b12f9](https://github.com/wangeditor-team/wangEditor/commit/99b12f9c0b1ade3b2810828b8b5c35e65dcebd43))
+
+## [4.4.2](https://github.com/wangeditor-team/wangEditor/compare/v4.4.1...v4.4.2) (2020-11-19)
+
+
+### Bug Fixes
+
+* [#2336](https://github.com/wangeditor-team/wangEditor/issues/2336) 重复截图粘贴到编辑区内,只会粘贴出第一次截图的图片 ([627c485](https://github.com/wangeditor-team/wangEditor/commit/627c4853e9b4e612084eaf9703c5c21cf65546fc))
+* [#2469](https://github.com/wangeditor-team/wangEditor/issues/2469) 火狐浏览器经过多次删除内容，重新添加内容 文章内容没有被p标签包裹 ([6c6e879](https://github.com/wangeditor-team/wangEditor/commit/6c6e879d5a0722634115c237fedc5e7e6d1a2519))
+* eslint 问题 ([5e918d6](https://github.com/wangeditor-team/wangEditor/commit/5e918d6850267f85c42903fbe494ace8e9586bb5))
+* 引用路径 ([01dc0ef](https://github.com/wangeditor-team/wangEditor/commit/01dc0ef0a1d4e613fd308a85472764edf5b54818))
+* 火狐中 getSelectionRangeTopNodes返回值 可能为undefined ([25a544a](https://github.com/wangeditor-team/wangEditor/commit/25a544a2e58de521f63e406aedd8493a36b41d98))
+* 直接按回车placeholder没有隐藏,只有回车2次以上才能隐藏 ([baa47ca](https://github.com/wangeditor-team/wangEditor/commit/baa47ca2c5a1064054490a829b8ed34ffd8c40f0))
+
+## [4.4.1](https://github.com/wangeditor-team/wangEditor/compare/v4.4.0...v4.4.1) (2020-11-18)
+
+
+### Bug Fixes
+
+* [#2301](https://github.com/wangeditor-team/wangEditor/issues/2301) zone.js Promise冲突问题 ([0f63a04](https://github.com/wangeditor-team/wangEditor/commit/0f63a0466f98ad9a183afbd3cb85160b1eb4b6a9))
+* [#2398](https://github.com/wangeditor-team/wangEditor/issues/2398) 自动聚焦 不触发 onfocus & 直接失焦不触发 onblur ([e3b39c6](https://github.com/wangeditor-team/wangEditor/commit/e3b39c6643cc2ab47909f692faad6a9c7c68e483))
+* 修复引用按钮高亮失效的问题 ([0e4a30e](https://github.com/wangeditor-team/wangEditor/commit/0e4a30e02cc02f54107c49597308d9665865c337))
+* 去除多余变量 ([e0f900d](https://github.com/wangeditor-team/wangEditor/commit/e0f900da4e465a061d1de48c85a7bbf782c9737d))
+
+# [4.4.0](https://github.com/wangeditor-team/wangEditor/compare/v4.3.0...v4.4.0) (2020-11-17)
+
+
+### Bug Fixes
+
+* 修复DomElement内部处理错误 ([04484e0](https://github.com/wangeditor-team/wangEditor/commit/04484e086194fddcdec14abb924a2c963f482869))
+* 修复firefox下会自动换行的问题 ([490c2e4](https://github.com/wangeditor-team/wangEditor/commit/490c2e48d2a0967a624f5475ce182fc2b12ed25f))
+* 修复firefox和chrome下引用表现不一致的问题 ([6c33e7f](https://github.com/wangeditor-team/wangEditor/commit/6c33e7fb8d82bfde9130541c405c55d93d043a0a))
+* 修复qoute下多行下表现态不一致的问题 ([cdbd853](https://github.com/wangeditor-team/wangEditor/commit/cdbd853ae74119cdab7f2574635ece17fd63c9ac))
+* 修复单元测试不一致的地方 ([5bf49a2](https://github.com/wangeditor-team/wangEditor/commit/5bf49a2a92dacdaa1072ae1218fad52ce8ca4932))
+* 修复多行和序列无法正常使用quote的问题 ([886072d](https://github.com/wangeditor-team/wangEditor/commit/886072d71b0405f9ae5183e2a767035a495f22e4))
+* 修复空行引用回车的的问题 ([d5124c8](https://github.com/wangeditor-team/wangEditor/commit/d5124c8f3b307e8e4630318b33af7e421acd7043))
+* 修复空行引用回车的的问题 ([6a68a83](https://github.com/wangeditor-team/wangEditor/commit/6a68a83cc4cac7e2bb27671b69386ab0bc35165a))
+* 修复隐患 ([b6ab6e0](https://github.com/wangeditor-team/wangEditor/commit/b6ab6e0d6c63256e9a60926d30f9a7e6809cc343))
+* 完善cypress配置 ([76b9920](https://github.com/wangeditor-team/wangEditor/commit/76b9920e28a26f4dbbf2f33fb501d65c5be745ac))
+* 完善测试用例 ([f7d616b](https://github.com/wangeditor-team/wangEditor/commit/f7d616b4ec31b864c29a63e65faa2c17436bd822))
+* 移除没有必要的依�� ([1e759e9](https://github.com/wangeditor-team/wangEditor/commit/1e759e96579e089529822b938cbbe7ffa4f3ec16))
+
+
+### Features
+
+* 使入口函数提示类型 ([ed60d29](https://github.com/wangeditor-team/wangEditor/commit/ed60d299cf487ae5c0cb2bc244773b06c216c76d))
+* 修改容易更改的类型 ([62455b2](https://github.com/wangeditor-team/wangEditor/commit/62455b2681a3dddde20b43731e0cbd35dfabf796))
+* 完善了测试用例 ([a126c01](https://github.com/wangeditor-team/wangEditor/commit/a126c01c463424fccb5ace7db0665fe1614b676b))
+* 完善了编辑器菜单所有测试用例 ([d9a9b37](https://github.com/wangeditor-team/wangEditor/commit/d9a9b379c614796bf10ca94f80bb5ef7390706f2))
+* 完善单元测试 ([4a724f9](https://github.com/wangeditor-team/wangEditor/commit/4a724f98bb8ad2e529bf770b42ec54d10886c0ce))
+* 添加所以菜单的测试文件 ([d85f19a](https://github.com/wangeditor-team/wangEditor/commit/d85f19a097070cc803efaaf2363d644264737fd6))
+* 添加新的测试 ([3a1ec8b](https://github.com/wangeditor-team/wangEditor/commit/3a1ec8b11ac07018239ca7e4ab1ac3941b7ac25f))
+* 添加新的测试用例 ([af512d7](https://github.com/wangeditor-team/wangEditor/commit/af512d749ba6566a39ba69ccb32ba3db99bae64b))
+
 # [4.3.0](https://github.com/wangeditor-team/wangEditor/compare/v4.2.2...v4.3.0) (2020-11-09)
 
 
@@ -396,7 +648,7 @@
 * ts 类型问题 ([2d85266](https://github.com/wangeditor-team/wangEditor/commit/2d85266a788c36c668d79601d2ac65efdec09847))
 * 修改 css class 名称 ([9ff1ffd](https://github.com/wangeditor-team/wangEditor/commit/9ff1ffdc7be476511f5cbef260c581f6e3c77afe))
 * 修改 css class 名称 ([3bec8a2](https://github.com/wangeditor-team/wangEditor/commit/3bec8a2ed49ee8f3226e34d83708684929a4b3cc))
-* 修改 css 替换style为空的时候，会有残留 ([6a56477](https://github.com/wangeditor-team/wangEditor/commit/6a564774a198bd450997250cfc869eaf7eab940f))
+* 修改 css 替换style为空的时候，会���残留 ([6a56477](https://github.com/wangeditor-team/wangEditor/commit/6a564774a198bd450997250cfc869eaf7eab940f))
 * 修改减少缩进的名称 和 icon 统一 ([37d965a](https://github.com/wangeditor-team/wangEditor/commit/37d965adbe3cb25615e506d1fdf1e3db054ae8f2))
 * 修改字体颜色 ([2a84f0b](https://github.com/wangeditor-team/wangEditor/commit/2a84f0be1d8a6ff17294c8c0e5ae5cc8d7eff6b7))
 * 函数添加返回值 ([2fd126a](https://github.com/wangeditor-team/wangEditor/commit/2fd126a8d3b557e0cbe0ea518ae06c25eef4c43a))
@@ -602,4 +854,3 @@
 * DropListMenu ([d5a1e5c](https://github.com/wangeditor-team/wangEditor/commit/d5a1e5c4ef5ea06bd7a2f2987ff04447833f680f))
 * Link menu ([5dc3398](https://github.com/wangeditor-team/wangEditor/commit/5dc3398f355796408050147b6286dd04a72d5e63))
 * 初始化编辑器的若干操作 ([84d6c03](https://github.com/wangeditor-team/wangEditor/commit/84d6c03496dad92814412b6563c4390422eadbe3))
-
