@@ -27,13 +27,15 @@ export function createShowHideFn(editor: Editor) {
                 $elem: $(`<span>${t('清空内容')}</span>`),
                 onClick: (editor: Editor, $code: DomElement) => {
                     // //dom操作删除
-                    // const parentCode = $code.parentUntil('code')
+                    const parentCode = $code.parentUntil('code')
+                    if (parentCode) {
+                        parentCode.remove()
+                    }
                     // if (parentCode) {
                     //     parentCode.html('<code><xmp > </xmp></code>')
                     // } else {
                     //     $code.html('<code><xmp type="Bash"> </xmp></code>')
                     // }
-                    $code.remove()
 
                     // 返回 true，表示执行完之后，隐藏 tooltip。否则不隐藏。
                     return true
